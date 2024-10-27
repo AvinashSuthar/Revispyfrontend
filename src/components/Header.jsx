@@ -1,9 +1,15 @@
 import React from "react";
 import { useAppStore } from "../store";
 
-
 const Header = () => {
-  const {userInfo} = useAppStore();
+  const { userInfo, token, setToken, setUserInfo } = useAppStore();
+  const handleLogout = () => {
+    setToken(null);
+    setUserInfo(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
+  };
+
   return (
     <>
       <div className="bg-white  h-[100px] w-[100%] p-2">
@@ -11,7 +17,21 @@ const Header = () => {
           <ul className="flex text-sm align-top text-left">
             <li className="ps-4">Help</li>
             <li className="ps-4">Orders & Returns</li>
-            <li className="ms-3 ps-4">Hi, <span className="font-semibold"> {userInfo && userInfo.name} </span> </li>
+            <li className="ms-3 ps-4 relative">
+              <div className="flex items-center">
+                Hi,
+                <span className="font-semibold ml-1 relative group hover:cursor-pointer">
+                  {userInfo && userInfo.name}
+                  {/* Logout Button */}
+                  <button
+                    onClick={handleLogout}
+                    className="absolute left-8 top-full mt-1 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    Logout
+                  </button>
+                </span>
+              </div>
+            </li>
           </ul>
         </div>
         <div className="flex justify-between ps-10 pe-10 items-center">
